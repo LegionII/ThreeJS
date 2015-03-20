@@ -5,6 +5,7 @@
     <script type="text/javascript" src="Three.js"></script>
     <script type="text/javascript" src="physi.js"></script>
     <script type="text/javascript" src="OrbitControls.js"></script>
+    <script type="text/javascript" src="TrackballControls.js"></script>
 
     <script type="text/javascript">
 
@@ -33,7 +34,19 @@
 
             scene.add(camera);
 
-            controls = new THREE.OrbitControls(camera);
+            controls = new THREE.TrackballControls(camera);
+            controls.rotateSpeed = 1.0;
+            controls.zoomSpeed = 1.2;
+            controls.panSpeed = 0.8;
+
+            controls.noZoom = false;
+            controls.noPan = false;
+
+            controls.staticMoving = true;
+            controls.dynamicDampingFactor = 0.3;
+
+            controls.keys = [65, 83, 68];
+
             controls.addEventListener('change', render);
 
 
@@ -45,22 +58,34 @@
 
             ground = new Physijs.BoxMesh(new THREE.CubeGeometry(100, 1, 100), new THREE.MeshBasicMaterial({ color: 0x8885688 }),0);
             ground.position.set(0, -20, 0);
-           // ground.rotateX(-45);
+ 
             scene.add(ground);
-            box.rotateX(45);
+          
             scene.add(box);
 
 
             requestAnimationFrame(render);
+           
         };
 
+        function animate() {
+
+            requestAnimationFrame(animate);
+            controls.update();
+
+        }
+
         render = function () {
-            scene.simulate(); // run physics
+            
+            // run physics
+            scene.simulate();
             renderer.render(scene, camera); // render the scene
-            requestAnimationFrame(render);
+            requestAnimationFrame(render);      
+
         };
 
         window.onload = initScene;
+        animate();
 
     </script>
 </head>
