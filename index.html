@@ -13,12 +13,25 @@
         Physijs.scripts.worker = 'physijs_worker.js';
         Physijs.scripts.ammo = 'ammo.js';
 
-        var initScene, render, renderer, scene, camera, ground,controls;
+        var initScene, render, renderer, scene, camera, ground,controls, addBulk;
 
         var rand1, rand2, rand3, rand4;
 
         var obstakel1, obstakel2,obstakel3,obstakel4,obstakel5,obstakel6,obstakel7,obstakel8,obstakel9,obstakel10,obstakel11,obstakel12,obstakel13,obstakel14,obstakel15,obstakel16,obstakel17,obstakel18,obstakel19,obstakel20, obstakel21,obstakel22;
 
+        var xtilt, ztilt, ztiltmax, xtiltmax;
+
+        var keyspressed = { 37: false, 38: false, 39: false, 40: false }
+
+        var tilt;
+
+        var children = new Array();
+
+        addBulk = function (targetscene,toAdd) {
+            for (var i = 0; i < toAdd.length; i++) {
+                targetscene.add(toAdd[i]);
+            }
+        };
 
         initScene = function () {
             renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -34,36 +47,42 @@
                 1000
             );
             camera.position.z = 100;
-       //     camera.lookAt(scene.position);
+            //     camera.lookAt(scene.position);
 
             scene.add(camera);
 
-            controls = new THREE.OrbitControls(camera);
-           // controls.addEventListener('change', render);
+            xtilt = 0;
+            ztilt = 0;
+            ztiltmax = 30;
+            xtiltmax = 30;
 
+            controls = new THREE.OrbitControls(camera);
+            // controls.addEventListener('change', render);
+
+            var obstakelMesh = new THREE.MeshBasicMaterial({ color: 0x888888 })
 
             // Rand
             rand1 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(2,5,100),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }),0
+                new THREE.BoxGeometry(2, 5, 100),
+                obstakelMesh, 0
             );
             rand1.position.set(49, -17, 0);
 
             rand2 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(98, 5, 2),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }),0
+                new THREE.BoxGeometry(98, 5, 2),
+                obstakelMesh, 0
             );
             rand2.position.set(-1, -17, -49);
 
             rand3 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(2, 5, 98),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }),0
+                new THREE.BoxGeometry(2, 5, 98),
+                obstakelMesh, 0
             );
             rand3.position.set(-49, -17, 1);
 
             rand4 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(96, 5, 2),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }),0
+                new THREE.BoxGeometry(96, 5, 2),
+                obstakelMesh, 0
             );
             rand4.position.set(0, -17, 49);
 
@@ -71,177 +90,204 @@
 
             //boven
             obstakel1 = new Physijs.BoxMesh(
-               new THREE.CubeGeometry(2, 5, 10),
-               new THREE.MeshBasicMaterial({ color: 0x888888 }),0
+                new THREE.BoxGeometry(2, 5, 10),
+                obstakelMesh, 0
             );
             obstakel1.position.set(0, -17, -45);
 
             obstakel2 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(20, 5, 2),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(20, 5, 2),
+                obstakelMesh, 0
             );
             obstakel2.position.set(40, -17, -40);
 
             obstakel3 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(80, 5, 2),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(80, 5, 2),
+                obstakelMesh, 0
             );
             obstakel3.position.set(10, -17, -0);
 
             obstakel4 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(2, 5, 20),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(2, 5, 20),
+                obstakelMesh, 0
             );
             obstakel4.position.set(0, -17, -20);
 
             obstakel5 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(20, 5, 2),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(20, 5, 2),
+                obstakelMesh, 0
             );
             obstakel5.position.set(-40, -17, -35);
 
             obstakel6 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(2, 5, 20),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(2, 5, 20),
+                obstakelMesh, 0
             );
             obstakel6.position.set(-29, -17, -10);
 
             obstakel7 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(2, 5, 30),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(2, 5, 30),
+                obstakelMesh, 0
             );
             obstakel7.position.set(-15, -17, -25);
 
             obstakel8 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(30, 5, 2),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(30, 5, 2),
+                obstakelMesh, 0
             );
             obstakel8.position.set(15, -17, -25);
 
             obstakel9 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(2, 5, 15),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(2, 5, 15),
+                obstakelMesh, 0
             );
             obstakel9.position.set(15, -17, -7.5);
 
             obstakel10 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(2, 5, 10),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(2, 5, 10),
+                obstakelMesh, 0
             );
             obstakel10.position.set(40, -17, -5);
             
 
             //onder
             obstakel11 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(15, 5, 2),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(15, 5, 2),
+                obstakelMesh, 0
             );
             obstakel11.position.set(-40, -17, 10);
 
             obstakel12 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(2, 5, 20),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(2, 5, 20),
+                obstakelMesh, 0
             );
             obstakel12.position.set(-20, -17, 10);
 
             obstakel13 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(20, 5, 2),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(20, 5, 2),
+                obstakelMesh, 0
             );
             obstakel13.position.set(-29, -17, 20);
 
             obstakel14 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(25, 5, 2),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(25, 5, 2),
+                obstakelMesh, 0
             );
             obstakel14.position.set(-12.5, -17, 35);
 
             obstakel15 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(2, 5, 20),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(2, 5, 20),
+                obstakelMesh, 0
             );
             obstakel15.position.set(-38, -17, 40);
 
             obstakel16 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(2, 5, 15),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(2, 5, 15),
+                obstakelMesh, 0
             );
             obstakel16.position.set(-25, -17, 35);
 
             obstakel17 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(2, 5, 15),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(2, 5, 15),
+                obstakelMesh, 0
             );
             obstakel17.position.set(40, -17, 42.5);
 
             obstakel18 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(10, 5, 2),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(10, 5, 2),
+                obstakelMesh, 0
             );
             obstakel18.position.set(35, -17, 40);
 
             obstakel19 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(2, 5, 30),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(2, 5, 30),
+                obstakelMesh, 0
             );
             obstakel19.position.set(15, -17, 25);
 
             obstakel20 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(20, 5, 2),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(20, 5, 2),
+                obstakelMesh, 0
             );
             obstakel20.position.set(-10, -17, 10);
 
             obstakel21 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(20, 5, 2),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(20, 5, 2),
+                obstakelMesh, 0
             );
             obstakel21.position.set(40, -17, 10);
 
             obstakel22 = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(2, 5, 15),
-                new THREE.MeshBasicMaterial({ color: 0x888888 }), 0
+                new THREE.BoxGeometry(2, 5, 15),
+                obstakelMesh, 0
             );
             obstakel22.position.set(31, -17, 25);
 
-            ground = new Physijs.BoxMesh(new THREE.CubeGeometry(100, 1, 100), new THREE.MeshBasicMaterial({ color: 0x8885688 }),0);
+            ground = new Physijs.BoxMesh(new THREE.BoxGeometry(100, 1, 100), new THREE.MeshBasicMaterial({ color: 0x8885688 }),0);
             ground.position.set(0, -20, 0);
-            //ground.rotateX(-45);
             scene.add(ground);
-            
-            scene.add(rand1);
-            scene.add(rand2);
-            scene.add(rand3);
-            scene.add(rand4);
 
-            scene.add(obstakel1);
-            scene.add(obstakel2);
-            scene.add(obstakel3);
-            scene.add(obstakel4);
-            scene.add(obstakel5);
-            scene.add(obstakel6);
-            scene.add(obstakel7);
-            scene.add(obstakel8);
-            scene.add(obstakel9);
-            scene.add(obstakel10);
-            scene.add(obstakel11);
-            scene.add(obstakel12);
-            scene.add(obstakel13);
-            scene.add(obstakel14);
-            scene.add(obstakel15);
-            scene.add(obstakel16);
-            scene.add(obstakel17);
-            scene.add(obstakel18);
-            scene.add(obstakel19);
-            scene.add(obstakel20);
-            scene.add(obstakel21);
-            scene.add(obstakel22);
+            //Randen toevoegen in bulk
+            addBulk(scene,[rand1, rand2, rand3, rand4]);
+            //Obstakels toevoegen in bulk
+            addBulk(scene, [obstakel1, obstakel2, obstakel3, obstakel4, obstakel5, obstakel6, obstakel7, obstakel8, obstakel9, obstakel10, obstakel11, obstakel12, obstakel13, obstakel14, obstakel15, obstakel16, obstakel17, obstakel18, obstakel19, obstakel20, obstakel21, obstakel22]);
+
+            //scene.addConstraint(new Physijs.PointConstraint(ground, rand1, new THREE.Vector3(0, 0, 0)));
+
+            window.addEventListener('keydown', function (event) {
+                if ((event.keyCode >= 37) & (event.keyCode <= 40)) {
+                    keyspressed[event.keyCode] = true
+                }
+            });
+            window.addEventListener('keyup', function (event) {
+                if ((event.keyCode >= 37) & (event.keyCode <= 40)) {
+                    keyspressed[event.keyCode] = false
+                }
+            });
+            for (var i = 0; i < scene.children.length; i++) {
+                try{
+                    if (scene.children[i].geometry.type == "BoxGeometry") {
+                        children.push(scene.children[i]);
+                    }
+                }
+                catch(ex){}
+            }
 
             requestAnimationFrame(render);
         };
 
+        tilt = function () {
+            if (keyspressed[37]) {//left
+                if (xtilt < xtiltmax) {
+                    xtilt += 1;
+                };
+            }
+            if (keyspressed[39]) {//right
+                if (xtilt > -xtiltmax) {
+                    xtilt -= 1;
+                };
+            }
+            if (keyspressed[38]) {//up
+                if (ztilt < ztiltmax) {
+                    ztilt += 1;
+                };
+            }
+            if (keyspressed[40]) {//down
+                if (ztilt > -ztiltmax) {
+                    ztilt -= 1;
+                };
+            }
+            for (var i = 0; i < children.length; i++) {
+                //children[i].rotation.set((Math.PI / 180) * xtilt, 0, (Math.PI / 180) * ztilt);
+                //children[i].__dirtyRotation = true;
+            }
+            //ground.rotation.set((Math.PI / 180) * xtilt, 0, (Math.PI / 180) * ztilt);
+            //ground.__dirtyRotation = true;
+
+        }
+
         render = function () {
-  
+            tilt();
             scene.simulate(); // run physics
             renderer.render(scene, camera); // render the scene
             requestAnimationFrame(render);
