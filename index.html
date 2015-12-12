@@ -5,7 +5,6 @@
     <script type="text/javascript" src="Three.js"></script>
     <script type="text/javascript" src="physi.js"></script>
     <script type="text/javascript" src="OrbitControls.js"></script>
-    <script type="text/javascript" src="TrackballControls.js"></script>
 
     <script type="text/javascript">
 
@@ -14,7 +13,11 @@
         Physijs.scripts.worker = 'physijs_worker.js';
         Physijs.scripts.ammo = 'ammo.js';
 
-        var initScene, render, renderer, scene, camera, box, material, ground, ground_material, controls, light;
+        var initScene, render, renderer, scene, camera, ground,controls;
+
+        var rand1, rand2, rand3, rand4;
+
+        var obstakel1;
 
         initScene = function () {
             renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -22,7 +25,7 @@
             document.getElementById('viewport').appendChild(renderer.domElement);
 
             scene = new Physijs.Scene;
-            
+
             camera = new THREE.PerspectiveCamera(
                 60,
                 window.innerWidth / window.innerHeight,
@@ -34,96 +37,67 @@
 
             scene.add(camera);
 
-            controls = new THREE.TrackballControls(camera);
-            controls.rotateSpeed = 1.0;
-            controls.zoomSpeed = 1.2;
-            controls.panSpeed = 0.8;
-
-            controls.noZoom = false;
-            controls.noPan = false;
-
-            controls.staticMoving = true;
-            controls.dynamicDampingFactor = 0.3;
-
-            controls.keys = [65, 83, 68];
-
+            controls = new THREE.OrbitControls(camera);
             controls.addEventListener('change', render);
 
 
-            // Box
-            material = Physijs.createMaterial(
-					new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture('plywood.jpg') }),
-					.6, // medium friction
-					.3 // low restitution
-				);
-            material.map.wrapS = material.map.wrapT = THREE.RepeatWrapping;
-            material.map.repeat.set(.5, .5);
-
-            box = new Physijs.BoxMesh(
-                new THREE.CubeGeometry(5,5,5),
-                material
+            // Rand
+            rand1 = new Physijs.BoxMesh(
+                new THREE.CubeGeometry(2,5,100),
+                new THREE.MeshBasicMaterial({ color: 0x888888 })
             );
+            rand1.position.set(49, -17, 0);
 
-            // Light
-            light = new THREE.DirectionalLight(0xFFFFFF);
-            light.position.set(20, 40, -15);
-            light.target.position.copy(scene.position);
-            light.castShadow = true;
-            light.shadowCameraLeft = -60;
-            light.shadowCameraTop = -60;
-            light.shadowCameraRight = 60;
-            light.shadowCameraBottom = 60;
-            light.shadowCameraNear = 20;
-            light.shadowCameraFar = 200;
-            light.shadowBias = -.0001
-            light.shadowMapWidth = light.shadowMapHeight = 2048;
-            light.shadowDarkness = .7;
-            scene.add(light);
-
-            // Ground
-            ground_material = Physijs.createMaterial(
-                new THREE.MeshLambertMaterial({ map: THREE.ImageUtils.loadTexture('rocks.jpg') }),
-                .8, // high friction
-                .3 // low restitution
+            rand2 = new Physijs.BoxMesh(
+                new THREE.CubeGeometry(98, 5, 2),
+                new THREE.MeshBasicMaterial({ color: 0x888888 })
             );
-            ground_material.map.wrapS = ground_material.map.wrapT = THREE.RepeatWrapping;
-            ground_material.map.repeat.set(3, 3);
+            rand2.position.set(-1, -17, -49);
 
-            ground = new Physijs.BoxMesh(
-			new THREE.CubeGeometry(100, 1, 100),
-			ground_material,
-			0 // mass
-		    );
-            ground.receiveShadow = true;
+            rand3 = new Physijs.BoxMesh(
+                new THREE.CubeGeometry(2, 5, 98),
+                new THREE.MeshBasicMaterial({ color: 0x888888 })
+            );
+            rand3.position.set(-49, -17, 1);
+
+            rand4 = new Physijs.BoxMesh(
+                new THREE.CubeGeometry(96, 5, 2),
+                new THREE.MeshBasicMaterial({ color: 0x888888 })
+            );
+            rand4.position.set(0, -17, 49);
+
+            //Obstakels
+            obstakel1 = new Physijs.BoxMesh(
+               new THREE.CubeGeometry(2, 5, 5),
+               new THREE.MeshBasicMaterial({ color: 0x888888 })
+           );
+            obstakel1.position.set(0, -17, -45,9);
+            
+
+
+            ground = new Physijs.BoxMesh(new THREE.CubeGeometry(100, 1, 100), new THREE.MeshBasicMaterial({ color: 0x8885688 }),0);
             ground.position.set(0, -20, 0);
- 
+            //ground.rotateX(-45);
             scene.add(ground);
-          
-            scene.add(box);
+            
+            scene.add(rand1);
+            scene.add(rand2);
+            scene.add(rand3);
+            scene.add(rand4);
 
+            scene.add(obstakel1);
 
             requestAnimationFrame(render);
-           
         };
 
-        function animate() {
-
-            requestAnimationFrame(animate);
-            controls.update();
-
-        }
-
         render = function () {
-            
-            // run physics
-            scene.simulate();
+            scene.simulate(); // run physics
             renderer.render(scene, camera); // render the scene
-            requestAnimationFrame(render);      
-
+            requestAnimationFrame(render);
+            
         };
 
         window.onload = initScene;
-        animate();
 
     </script>
 </head>
