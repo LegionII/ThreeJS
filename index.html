@@ -15,7 +15,11 @@
         Physijs.scripts.worker = 'physijs_worker.js';
         Physijs.scripts.ammo = 'ammo.js';
 
-        var initScene, render, renderer, scene, camera, ground,controls, addBulk, light;
+        var initScene, render, renderer, scene, camera, ground, controls, addBulk, light;
+
+        var texture1 = THREE.ImageUtils.loadTexture("Textures/wood1.jpg");
+        var texture2 = THREE.ImageUtils.loadTexture("Textures/wood2.jpg");
+        var texture3 = THREE.ImageUtils.loadTexture("Textures/metal2.jpg");
 
         var rand1, rand2, rand3, rand4;
 
@@ -86,10 +90,11 @@
             //controls = new THREE.OrbitControls(camera);
             // controls.addEventListener('change', render);
 
-            var obstakelMesh = new THREE.MeshBasicMaterial({ color: 0x888888 })
+            var obstakelMesh = new THREE.MeshBasicMaterial({ map: texture1 })
+            var ballMesh = new THREE.MeshBasicMaterial({ map: texture3 })
 
             //ground
-            ground = new Physijs.BoxMesh(new THREE.BoxGeometry(100, 1, 100), new THREE.MeshBasicMaterial({ color: 0x8885688 }), 0);
+            ground = new Physijs.BoxMesh(new THREE.BoxGeometry(100, 1, 100), new THREE.MeshBasicMaterial({ map: texture2 }), 0);
             ground.position.set(0, -20, 0);
             ground.receiveShadow = true;
 
@@ -329,7 +334,7 @@
 
             var sphere = new Physijs.SphereMesh(
                 new THREE.SphereGeometry(2,32,32),
-                obstakelMesh,100);
+                ballMesh,100);
             //sphere.position.set(new THREE.Vector3(0, 0, 0));
             sphere.position.y -= 15
             sphere.position.z -= 6
