@@ -61,30 +61,35 @@
 
             var obstakelMesh = new THREE.MeshBasicMaterial({ color: 0x888888 })
 
+            //ground
+            ground = new Physijs.BoxMesh(new THREE.BoxGeometry(100, 1, 100), new THREE.MeshBasicMaterial({ color: 0x8885688 }), 0);
+            ground.position.set(0, -20, 0);
+            scene.add(ground);
+
             // Rand
             rand1 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(2, 5, 100),
                 obstakelMesh, 0
             );
-            rand1.position.set(49, -17, 0);
+            rand1.position.set(49, rand1.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, 0);
 
             rand2 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(98, 5, 2),
                 obstakelMesh, 0
             );
-            rand2.position.set(-1, -17, -49);
+            rand2.position.set(-1, rand2.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, -49);
 
             rand3 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(2, 5, 98),
                 obstakelMesh, 0
             );
-            rand3.position.set(-49, -17, 1);
+            rand3.position.set(-49, rand3.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, 1);
 
             rand4 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(96, 5, 2),
                 obstakelMesh, 0
             );
-            rand4.position.set(0, -17, 49);
+            rand4.position.set(0, rand4.geometry.parameters.height / 2 + ground.geometry.parameters.height / 2, 49);
 
             //Obstakels
 
@@ -93,61 +98,61 @@
                 new THREE.BoxGeometry(2, 5, 10),
                 obstakelMesh, 0
             );
-            obstakel1.position.set(0, -17, -45);
+            obstakel1.position.set(0, obstakel1.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, -45);
 
             obstakel2 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(20, 5, 2),
                 obstakelMesh, 0
             );
-            obstakel2.position.set(40, -17, -40);
+            obstakel2.position.set(40, obstakel2.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, -40);
 
             obstakel3 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(80, 5, 2),
                 obstakelMesh, 0
             );
-            obstakel3.position.set(10, -17, -0);
+            obstakel3.position.set(10, obstakel3.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, -0);
 
             obstakel4 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(2, 5, 20),
                 obstakelMesh, 0
             );
-            obstakel4.position.set(0, -17, -20);
+            obstakel4.position.set(0, obstakel4.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, -20);
 
             obstakel5 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(20, 5, 2),
                 obstakelMesh, 0
             );
-            obstakel5.position.set(-40, -17, -35);
+            obstakel5.position.set(-40, obstakel5.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, -35);
 
             obstakel6 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(2, 5, 20),
                 obstakelMesh, 0
             );
-            obstakel6.position.set(-29, -17, -10);
+            obstakel6.position.set(-29, obstakel6.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, -10);
 
             obstakel7 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(2, 5, 30),
                 obstakelMesh, 0
             );
-            obstakel7.position.set(-15, -17, -25);
+            obstakel7.position.set(-15, obstakel7.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, -25);
 
             obstakel8 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(30, 5, 2),
                 obstakelMesh, 0
             );
-            obstakel8.position.set(15, -17, -25);
+            obstakel8.position.set(15, obstakel8.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, -25);
 
             obstakel9 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(2, 5, 15),
                 obstakelMesh, 0
             );
-            obstakel9.position.set(15, -17, -7.5);
+            obstakel9.position.set(15, obstakel9.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, -7.5);
 
             obstakel10 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(2, 5, 10),
                 obstakelMesh, 0
             );
-            obstakel10.position.set(40, -17, -5);
+            obstakel10.position.set(40, obstakel10.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, -5);
             
 
             //onder
@@ -155,82 +160,78 @@
                 new THREE.BoxGeometry(15, 5, 2),
                 obstakelMesh, 0
             );
-            obstakel11.position.set(-40, -17, 10);
+            obstakel11.position.set(-40, obstakel11.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, 10);
 
             obstakel12 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(2, 5, 20),
                 obstakelMesh, 0
             );
-            obstakel12.position.set(-20, -17, 10);
+            obstakel12.position.set(-20, obstakel12.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, 10);
 
             obstakel13 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(20, 5, 2),
                 obstakelMesh, 0
             );
-            obstakel13.position.set(-29, -17, 20);
+            obstakel13.position.set(-29, obstakel13.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, 20);
 
             obstakel14 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(25, 5, 2),
                 obstakelMesh, 0
             );
-            obstakel14.position.set(-12.5, -17, 35);
+            obstakel14.position.set(-12.5, obstakel14.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, 35);
 
             obstakel15 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(2, 5, 20),
                 obstakelMesh, 0
             );
-            obstakel15.position.set(-38, -17, 40);
+            obstakel15.position.set(-38, obstakel15.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, 40);
 
             obstakel16 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(2, 5, 15),
                 obstakelMesh, 0
             );
-            obstakel16.position.set(-25, -17, 35);
+            obstakel16.position.set(-25, obstakel16.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, 35);
 
             obstakel17 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(2, 5, 15),
                 obstakelMesh, 0
             );
-            obstakel17.position.set(40, -17, 42.5);
+            obstakel17.position.set(40, obstakel17.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, 42.5);
 
             obstakel18 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(10, 5, 2),
                 obstakelMesh, 0
             );
-            obstakel18.position.set(35, -17, 40);
+            obstakel18.position.set(35, obstakel18.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, 40);
 
             obstakel19 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(2, 5, 30),
                 obstakelMesh, 0
             );
-            obstakel19.position.set(15, -17, 25);
+            obstakel19.position.set(15, obstakel19.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, 25);
 
             obstakel20 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(20, 5, 2),
                 obstakelMesh, 0
             );
-            obstakel20.position.set(-10, -17, 10);
+            obstakel20.position.set(-10, obstakel20.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, 10);
 
             obstakel21 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(20, 5, 2),
                 obstakelMesh, 0
             );
-            obstakel21.position.set(40, -17, 10);
+            obstakel21.position.set(40, obstakel21.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, 10);
 
             obstakel22 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(2, 5, 15),
                 obstakelMesh, 0
             );
-            obstakel22.position.set(31, -17, 25);
-
-            ground = new Physijs.BoxMesh(new THREE.BoxGeometry(100, 1, 100), new THREE.MeshBasicMaterial({ color: 0x8885688 }),0);
-            ground.position.set(0, -20, 0);
-            scene.add(ground);
+            obstakel22.position.set(31, obstakel22.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, 25);
 
             //Randen toevoegen in bulk
-            addBulk(scene,[rand1, rand2, rand3, rand4]);
+            addBulk(ground,[rand1, rand2, rand3, rand4]);
             //Obstakels toevoegen in bulk
-            addBulk(scene, [obstakel1, obstakel2, obstakel3, obstakel4, obstakel5, obstakel6, obstakel7, obstakel8, obstakel9, obstakel10, obstakel11, obstakel12, obstakel13, obstakel14, obstakel15, obstakel16, obstakel17, obstakel18, obstakel19, obstakel20, obstakel21, obstakel22]);
+            addBulk(ground, [obstakel1, obstakel2, obstakel3, obstakel4, obstakel5, obstakel6, obstakel7, obstakel8, obstakel9, obstakel10, obstakel11, obstakel12, obstakel13, obstakel14, obstakel15, obstakel16, obstakel17, obstakel18, obstakel19, obstakel20, obstakel21, obstakel22]);
 
             //scene.addConstraint(new Physijs.PointConstraint(ground, rand1, new THREE.Vector3(0, 0, 0)));
 
@@ -281,8 +282,8 @@
                 //children[i].rotation.set((Math.PI / 180) * xtilt, 0, (Math.PI / 180) * ztilt);
                 //children[i].__dirtyRotation = true;
             }
-            //ground.rotation.set((Math.PI / 180) * xtilt, 0, (Math.PI / 180) * ztilt);
-            //ground.__dirtyRotation = true;
+            ground.rotation.set((Math.PI / 180) * xtilt, 0, (Math.PI / 180) * ztilt);
+            ground.__dirtyRotation = true;
 
         }
 

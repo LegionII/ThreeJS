@@ -1,0 +1,1 @@
+START /B "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" %~dp0\index.html --allow-file-access-from-files
