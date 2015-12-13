@@ -15,7 +15,7 @@
         Physijs.scripts.worker = 'physijs_worker.js';
         Physijs.scripts.ammo = 'ammo.js';
 
-        var initScene, render, renderer, scene, camera, ground, controls, addBulk, light;
+        var initScene, render, renderer, scene, camera, ground, controls, addBulk, light, sphere;
 
         var texture1 = THREE.ImageUtils.loadTexture("Textures/wood1.jpg");
         var texture2 = THREE.ImageUtils.loadTexture("Textures/wood2.jpg");
@@ -31,6 +31,8 @@
             obstakel11, obstakel12, obstakel13, obstakel14, obstakel15, obstakel16, obstakel17, obstakel18, obstakel19, obstakel20,
             obstakel21, obstakel22;
         var obstakels = new Array();
+
+        var holes = new Array();
 
         var xtilt, ztilt, ztiltmax, xtiltmax;
 
@@ -288,17 +290,19 @@
 
             //create ground with holes
             var hole = new Physijs.CylinderMesh(
-                new THREE.CylinderGeometry(5, 5, 2, 32, 1, false),
+                new THREE.CylinderGeometry(3, 3, 2, 32, 1, false),
                 obstakelMesh, 0);
-            hole.position.set(0, 1, 0);
+            var collisionhole = new Physijs.CylinderMesh(
+                new THREE.CylinderGeometry(3, 3, 2, 32, 1, false),
+                obstakelMesh, 0);
+            collisionhole.scale.set(.5, .5, .5);
+            hole.position.set(5, (hole.geometry.parameters.height / 2) - (ground.geometry.parameters.height / 2), -2);//north/south, up/down, west/east
+            collisionhole.position.set(5, (hole.geometry.parameters.height / 2) - (ground.geometry.parameters.height / 2)+1, -2);//north/south, up/down, west/east
             
-            var cube = CSG.cube();
-            var cylinder = CSG.cylinder({ radius: 1 });
-            var polygons = cube.subtract(cylinder).toPolygons();
-            //scene.add(polygons);
-            //ground.add(hole);
+            holes.push(collisionhole)
 
-            var sphere = new Physijs.SphereMesh(
+
+            sphere = new Physijs.SphereMesh(
                 new THREE.SphereGeometry(2,32,32),
                 ballMesh,100);
             //sphere.position.set(new THREE.Vector3(0, 0, 0));
@@ -307,6 +311,7 @@
             sphere.castShadow = true;
             scene.add(ground);
             scene.add(sphere);
+            addBulk(ground, holes); 
             
             scene.setGravity(new THREE.Vector3(0, -100, 0));
             //scene.addConstraint(new Physijs.PointConstraint(ground, rand1, new THREE.Vector3(0, 0, 0)));
