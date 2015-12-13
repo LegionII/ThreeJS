@@ -5,6 +5,8 @@
     <script type="text/javascript" src="Three.js"></script>
     <script type="text/javascript" src="physi.js"></script>
     <script type="text/javascript" src="OrbitControls.js"></script>
+    <script type="text/javascript" src="csg.js"></script>
+
 
     <script type="text/javascript">
 
@@ -21,6 +23,8 @@
 
         var xtilt, ztilt, ztiltmax, xtiltmax;
 
+
+
         var keyspressed = { 37: false, 38: false, 39: false, 40: false }
 
         var tilt;
@@ -35,7 +39,7 @@
 
         initScene = function () {
             renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setSize(window.innerWidth * .95, window.innerHeight * .95);
             document.getElementById('viewport').appendChild(renderer.domElement);
 
             scene = new Physijs.Scene;
@@ -46,8 +50,11 @@
                 1,
                 1000
             );
-            camera.position.z = 100;
-            //     camera.lookAt(scene.position);
+            camera.position.z = 0;
+            camera.position.y = 100;
+            camera.position.x = 50;
+            camera.lookAt(scene.position);
+            camera.lookAt(new THREE.Vector3(0, 0, 0));
 
             scene.add(camera);
 
@@ -56,7 +63,7 @@
             ztiltmax = 30;
             xtiltmax = 30;
 
-            controls = new THREE.OrbitControls(camera);
+            //controls = new THREE.OrbitControls(camera);
             // controls.addEventListener('change', render);
 
             var obstakelMesh = new THREE.MeshBasicMaterial({ color: 0x888888 })
@@ -64,7 +71,6 @@
             //ground
             ground = new Physijs.BoxMesh(new THREE.BoxGeometry(100, 1, 100), new THREE.MeshBasicMaterial({ color: 0x8885688 }), 0);
             ground.position.set(0, -20, 0);
-            scene.add(ground);
 
             // Rand
             rand1 = new Physijs.BoxMesh(
@@ -233,6 +239,27 @@
             //Obstakels toevoegen in bulk
             addBulk(ground, [obstakel1, obstakel2, obstakel3, obstakel4, obstakel5, obstakel6, obstakel7, obstakel8, obstakel9, obstakel10, obstakel11, obstakel12, obstakel13, obstakel14, obstakel15, obstakel16, obstakel17, obstakel18, obstakel19, obstakel20, obstakel21, obstakel22]);
 
+            //create ground with holes
+            var hole = new Physijs.CylinderMesh(
+                new THREE.CylinderGeometry(5, 5, 2, 32, 1, false),
+                obstakelMesh, 0);
+            hole.position.set(0, 1, 0);
+            
+            var cube = CSG.cube();
+            var cylinder = CSG.cylinder({ radius: 1 });
+            var polygons = cube.subtract(cylinder).toPolygons();
+            //scene.add(poly
+            //ground.add(hole);
+
+            var sphere = new Physijs.SphereMesh(
+                new THREE.SphereGeometry(2,32,32),
+                obstakelMesh,100);
+            //sphere.position.set(new THREE.Vector3(0, 0, 0));
+            sphere.position.y -= 15
+            sphere.position.z -= 6
+            scene.add(ground);
+            scene.add(sphere);
+            scene.setGravity(new THREE.Vector3(0, -100, 0));
             //scene.addConstraint(new Physijs.PointConstraint(ground, rand1, new THREE.Vector3(0, 0, 0)));
 
             window.addEventListener('keydown', function (event) {
@@ -282,9 +309,10 @@
                 //children[i].rotation.set((Math.PI / 180) * xtilt, 0, (Math.PI / 180) * ztilt);
                 //children[i].__dirtyRotation = true;
             }
-            ground.rotation.set((Math.PI / 180) * xtilt, 0, (Math.PI / 180) * ztilt);
-            ground.__dirtyRotation = true;
+            //ground.rotation.set((Math.PI / 180) * xtilt, 0, (Math.PI / 180) * ztilt);
+            //ground.__dirtyRotation = true;
 
+            scene.setGravity(new THREE.Vector3(-ztilt, -100, xtilt));
         }
 
         render = function () {
