@@ -25,12 +25,14 @@
         //texture3.offset.set(15, 15);
 
         var rand1, rand2, rand3, rand4;
+        var randen = new Array();
 
-        var obstakel1, obstakel2,obstakel3,obstakel4,obstakel5,obstakel6,obstakel7,obstakel8,obstakel9,obstakel10,obstakel11,obstakel12,obstakel13,obstakel14,obstakel15,obstakel16,obstakel17,obstakel18,obstakel19,obstakel20, obstakel21,obstakel22;
+        var obstakel1, obstakel2, obstakel3, obstakel4, obstakel5, obstakel6, obstakel7, obstakel8, obstakel9, obstakel10,
+            obstakel11, obstakel12, obstakel13, obstakel14, obstakel15, obstakel16, obstakel17, obstakel18, obstakel19, obstakel20,
+            obstakel21, obstakel22;
+        var obstakels = new Array();
 
         var xtilt, ztilt, ztiltmax, xtiltmax;
-
-
 
         var keyspressed = { 37: false, 38: false, 39: false, 40: false }
 
@@ -91,7 +93,7 @@
             xtiltmax = 30;
 
             //controls = new THREE.OrbitControls(camera);
-            // controls.addEventListener('change', render);
+            //controls.addEventListener('change', render);
 
             var obstakelMesh = new THREE.MeshBasicMaterial({ map: texture1 })
             var ballMesh = new THREE.MeshBasicMaterial({ map: texture3})
@@ -126,6 +128,7 @@
             );
             rand4.position.set(0, rand4.geometry.parameters.height / 2 + ground.geometry.parameters.height / 2, 49);
 
+            randen.push(rand1, rand2, rand3, rand4);
             //Obstakels
 
             //boven
@@ -263,65 +266,25 @@
             );
             obstakel22.position.set(31, obstakel22.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, 25);
 
-            rand1.castShadow = true;
-            rand1.receiveShadow = true;
-            rand2.castShadow = true;
-            rand2.receiveShadow = true;
-            rand3.castShadow = true;
-            rand3.receiveShadow = true;
-            rand4.castShadow = true;
-            rand4.receiveShadow = true;
+            obstakels.push(obstakel1, obstakel2, obstakel3, obstakel4, obstakel5, obstakel6, obstakel7, obstakel8, obstakel9, obstakel10,
+                obstakel11, obstakel12, obstakel13, obstakel14, obstakel15, obstakel16, obstakel17, obstakel18, obstakel19, obstakel20,
+                obstakel21, obstakel22);
 
-            obstakel1.castShadow = true;
-            obstakel1.receiveShadow = true;
-            obstakel2.castShadow = true;
-            obstakel2.receiveShadow = true;
-            obstakel3.castShadow = true;
-            obstakel3.receiveShadow = true;
-            obstakel4.castShadow = true;
-            obstakel4.receiveShadow = true;
-            obstakel5.castShadow = true;
-            obstakel5.receiveShadow = true;
-            obstakel6.castShadow = true;
-            obstakel6.receiveShadow = true;
-            obstakel7.castShadow = true;
-            obstakel7.receiveShadow = true;
-            obstakel8.castShadow = true;
-            obstakel8.receiveShadow = true;
-            obstakel9.castShadow = true;
-            obstakel9.receiveShadow = true;
-            obstakel10.castShadow = true;
-            obstakel10.receiveShadow = true;
-            obstakel11.castShadow = true;
-            obstakel11.receiveShadow = true;
-            obstakel12.castShadow = true;
-            obstakel12.receiveShadow = true;
-            obstakel13.castShadow = true;
-            obstakel13.receiveShadow = true;
-            obstakel14.castShadow = true;
-            obstakel14.receiveShadow = true;
-            obstakel15.castShadow = true;
-            obstakel15.receiveShadow = true;
-            obstakel16.castShadow = true;
-            obstakel16.receiveShadow = true;
-            obstakel17.castShadow = true;
-            obstakel17.receiveShadow = true;
-            obstakel18.castShadow = true;
-            obstakel18.receiveShadow = true;
-            obstakel19.castShadow = true;
-            obstakel19.receiveShadow = true;
-            obstakel20.castShadow = true;
-            obstakel20.receiveShadow = true;
-            obstakel21.castShadow = true;
-            obstakel21.receiveShadow = true;
-            obstakel22.castShadow = true;
-            obstakel22.receiveShadow = true;
+            for (var i = 0; i < randen.length; i++) {
+                randen[i].castShadow = true;
+                randen[i].receiveShadow = true;
+            }
+
+            for (var i = 0; i < obstakels.length; i++) {
+                obstakels[i].castShadow = true;
+                obstakels[i].receiveShadow = true;
+            }
 
 
             //Randen toevoegen in bulk
-            addBulk(ground,[rand1, rand2, rand3, rand4]);
+            addBulk(ground, randen);
             //Obstakels toevoegen in bulk
-            addBulk(ground, [obstakel1, obstakel2, obstakel3, obstakel4, obstakel5, obstakel6, obstakel7, obstakel8, obstakel9, obstakel10, obstakel11, obstakel12, obstakel13, obstakel14, obstakel15, obstakel16, obstakel17, obstakel18, obstakel19, obstakel20, obstakel21, obstakel22]);
+            addBulk(ground, obstakels);
 
             //create ground with holes
             var hole = new Physijs.CylinderMesh(
