@@ -15,7 +15,7 @@
         Physijs.scripts.worker = 'physijs_worker.js';
         Physijs.scripts.ammo = 'ammo.js';
 
-        var initScene, render, renderer, scene, camera, ground,controls, addBulk;
+        var initScene, render, renderer, scene, camera, ground,controls, addBulk, light;
 
         var rand1, rand2, rand3, rand4;
 
@@ -34,11 +34,14 @@
         addBulk = function (targetscene,toAdd) {
             for (var i = 0; i < toAdd.length; i++) {
                 targetscene.add(toAdd[i]);
+                
             }
         };
 
         initScene = function () {
             renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.shadowMapEnabled = true;
+            renderer.shadowMapSoft = true;
             renderer.setSize(window.innerWidth * .95, window.innerHeight * .95);
             document.getElementById('viewport').appendChild(renderer.domElement);
 
@@ -58,6 +61,23 @@
 
             scene.add(camera);
 
+            //light
+            light = new THREE.DirectionalLight(0xFFFFFF);
+            light.position.set(70, 100, 70);
+            light.target.position.copy(scene.position);
+            light.castShadow = true;
+            light.shadowCameraLeft = -100;
+            light.shadowCameraTop = -100;
+            light.shadowCameraRight = 100;
+            light.shadowCameraBottom = 100;
+            light.shadowCameraNear = 20;
+            light.shadowCameraFar = 400;
+            light.shadowBias = -.0001
+            light.shadowMapWidth = light.shadowMapHeight = 2048;
+            light.shadowDarkness = .7;
+            scene.add(light);
+
+
             xtilt = 0;
             ztilt = 0;
             ztiltmax = 30;
@@ -71,6 +91,7 @@
             //ground
             ground = new Physijs.BoxMesh(new THREE.BoxGeometry(100, 1, 100), new THREE.MeshBasicMaterial({ color: 0x8885688 }), 0);
             ground.position.set(0, -20, 0);
+            ground.receiveShadow = true;
 
             // Rand
             rand1 = new Physijs.BoxMesh(
@@ -78,7 +99,7 @@
                 obstakelMesh, 0
             );
             rand1.position.set(49, rand1.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, 0);
-
+            
             rand2 = new Physijs.BoxMesh(
                 new THREE.BoxGeometry(98, 5, 2),
                 obstakelMesh, 0
@@ -234,6 +255,61 @@
             );
             obstakel22.position.set(31, obstakel22.geometry.parameters.height / 2  + ground.geometry.parameters.height/2, 25);
 
+            rand1.castShadow = true;
+            rand1.receiveShadow = true;
+            rand2.castShadow = true;
+            rand2.receiveShadow = true;
+            rand3.castShadow = true;
+            rand3.receiveShadow = true;
+            rand4.castShadow = true;
+            rand4.receiveShadow = true;
+
+            obstakel1.castShadow = true;
+            obstakel1.receiveShadow = true;
+            obstakel2.castShadow = true;
+            obstakel2.receiveShadow = true;
+            obstakel3.castShadow = true;
+            obstakel3.receiveShadow = true;
+            obstakel4.castShadow = true;
+            obstakel4.receiveShadow = true;
+            obstakel5.castShadow = true;
+            obstakel5.receiveShadow = true;
+            obstakel6.castShadow = true;
+            obstakel6.receiveShadow = true;
+            obstakel7.castShadow = true;
+            obstakel7.receiveShadow = true;
+            obstakel8.castShadow = true;
+            obstakel8.receiveShadow = true;
+            obstakel9.castShadow = true;
+            obstakel9.receiveShadow = true;
+            obstakel10.castShadow = true;
+            obstakel10.receiveShadow = true;
+            obstakel11.castShadow = true;
+            obstakel11.receiveShadow = true;
+            obstakel12.castShadow = true;
+            obstakel12.receiveShadow = true;
+            obstakel13.castShadow = true;
+            obstakel13.receiveShadow = true;
+            obstakel14.castShadow = true;
+            obstakel14.receiveShadow = true;
+            obstakel15.castShadow = true;
+            obstakel15.receiveShadow = true;
+            obstakel16.castShadow = true;
+            obstakel16.receiveShadow = true;
+            obstakel17.castShadow = true;
+            obstakel17.receiveShadow = true;
+            obstakel18.castShadow = true;
+            obstakel18.receiveShadow = true;
+            obstakel19.castShadow = true;
+            obstakel19.receiveShadow = true;
+            obstakel20.castShadow = true;
+            obstakel20.receiveShadow = true;
+            obstakel21.castShadow = true;
+            obstakel21.receiveShadow = true;
+            obstakel22.castShadow = true;
+            obstakel22.receiveShadow = true;
+
+
             //Randen toevoegen in bulk
             addBulk(ground,[rand1, rand2, rand3, rand4]);
             //Obstakels toevoegen in bulk
@@ -248,7 +324,7 @@
             var cube = CSG.cube();
             var cylinder = CSG.cylinder({ radius: 1 });
             var polygons = cube.subtract(cylinder).toPolygons();
-            //scene.add(poly
+            //scene.add(polygons);
             //ground.add(hole);
 
             var sphere = new Physijs.SphereMesh(
@@ -257,8 +333,10 @@
             //sphere.position.set(new THREE.Vector3(0, 0, 0));
             sphere.position.y -= 15
             sphere.position.z -= 6
+            sphere.castShadow = true;
             scene.add(ground);
             scene.add(sphere);
+            
             scene.setGravity(new THREE.Vector3(0, -100, 0));
             //scene.addConstraint(new Physijs.PointConstraint(ground, rand1, new THREE.Vector3(0, 0, 0)));
 
