@@ -18,7 +18,7 @@
         var initScene, render, renderer, scene, camera, ground, controls, addBulk, light, sphere;
 
         var texture1 = THREE.ImageUtils.loadTexture("Textures/wood1.jpg");
-        var texture2 = THREE.ImageUtils.loadTexture("Textures/wood2.jpg");
+        var texture2 = THREE.ImageUtils.loadTexture("Textures/wood3.jpg");
         var texture3 = THREE.ImageUtils.loadTexture("Textures/marble1.jpg");
        // texture3.wrapS = texture3.wrapT = THREE.ClampToEdgeWrapping;
       //  texture3.repeat.set(1, 1);
@@ -305,13 +305,14 @@
             sphere = new Physijs.SphereMesh(
                 new THREE.SphereGeometry(2,32,32),
                 ballMesh,100);
-            //sphere.position.set(new THREE.Vector3(0, 0, 0));
+            
             sphere.position.y -= 15
             sphere.position.z -= 6
+            sphere.position.set(45,15,-45);
             sphere.castShadow = true;
             scene.add(ground);
             scene.add(sphere);
-            addBulk(ground, holes); 
+           // addBulk(ground, holes); 
             
             scene.setGravity(new THREE.Vector3(0, -100, 0));
             //scene.addConstraint(new Physijs.PointConstraint(ground, rand1, new THREE.Vector3(0, 0, 0)));
